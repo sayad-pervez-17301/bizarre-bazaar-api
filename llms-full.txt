@@ -2,12 +2,13 @@
 
 > This file contains the complete API documentation for the Bizarre Bazaar API.
 
+// === fruits.oas.dereferenced.json ===
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "Bizarre Bazaar API",
+    "title": "Bizarre Bazaar API - Fruits",
     "version": "1.0.0",
-    "description": "The Bizarre Bazaar API is a RESTful service for managing six unique collections: Fruits, Vegetables, Legumes, Colors, Animals, and Movies. Each collection supports full CRUD operations with pagination and sorting."
+    "description": "Manage your fruit collection. Part of the Bizarre Bazaar API."
   },
   "servers": [
     {
@@ -544,7 +545,40 @@
           }
         }
       }
-    },
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Bizarre-Key",
+        "description": "API key for authentication"
+      }
+    }
+  }
+}
+
+// === vegetables.oas.dereferenced.json ===
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Bizarre Bazaar API - Vegetables",
+    "version": "1.0.0",
+    "description": "Browse and manage vegetables. Part of the Bizarre Bazaar API."
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Current host"
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "paths": {
     "/vegetables": {
       "get": {
         "tags": [
@@ -1068,7 +1102,40 @@
           }
         }
       }
-    },
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Bizarre-Key",
+        "description": "API key for authentication"
+      }
+    }
+  }
+}
+
+// === legumes.oas.dereferenced.json ===
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Bizarre Bazaar API - Legumes",
+    "version": "1.0.0",
+    "description": "Explore the legume catalog. Part of the Bizarre Bazaar API."
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Current host"
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "paths": {
     "/legumes": {
       "get": {
         "tags": [
@@ -1592,7 +1659,40 @@
           }
         }
       }
-    },
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Bizarre-Key",
+        "description": "API key for authentication"
+      }
+    }
+  }
+}
+
+// === colors.oas.dereferenced.json ===
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Bizarre Bazaar API - Colors",
+    "version": "1.0.0",
+    "description": "Discover and manage colors. Part of the Bizarre Bazaar API."
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Current host"
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "paths": {
     "/colors": {
       "get": {
         "tags": [
@@ -2116,7 +2216,40 @@
           }
         }
       }
-    },
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Bizarre-Key",
+        "description": "API key for authentication"
+      }
+    }
+  }
+}
+
+// === animals.oas.dereferenced.json ===
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Bizarre Bazaar API - Animals",
+    "version": "1.0.0",
+    "description": "Catalog of animals. Part of the Bizarre Bazaar API."
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Current host"
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "paths": {
     "/animals": {
       "get": {
         "tags": [
@@ -2640,7 +2773,40 @@
           }
         }
       }
-    },
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Bizarre-Key",
+        "description": "API key for authentication"
+      }
+    }
+  }
+}
+
+// === movies.oas.dereferenced.json ===
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Bizarre Bazaar API - Movies",
+    "version": "1.0.0",
+    "description": "Browse the movie database. Part of the Bizarre Bazaar API."
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Current host"
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "paths": {
     "/movies": {
       "get": {
         "tags": [
