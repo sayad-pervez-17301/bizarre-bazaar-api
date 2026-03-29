@@ -1,0 +1,409 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Bizarre Bazaar API - Colors",
+    "version": "1.0.0",
+    "description": "Discover and manage colors. Part of the Bizarre Bazaar API."
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Current host"
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "paths": {
+    "/colors": {
+      "get": {
+        "tags": [
+          "Colors"
+        ],
+        "summary": "List all colors",
+        "description": "Discover and manage colors.",
+        "operationId": "listColors",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/LimitParam"
+          },
+          {
+            "$ref": "#/components/parameters/OffsetParam"
+          },
+          {
+            "$ref": "#/components/parameters/SortParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A paginated list of colors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Color"
+                      }
+                    },
+                    "total": {
+                      "type": "integer",
+                      "description": "Total number of items"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "Items per page"
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "Offset from start"
+                    }
+                  }
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": 1,
+                      "name": "Leonhard Euler",
+                      "nationality": "Swiss",
+                      "birthYear": 1707,
+                      "knownFor": "Euler's formula",
+                      "field": "Analysis"
+                    },
+                    {
+                      "id": 2,
+                      "name": "Carl Friedrich Gauss",
+                      "nationality": "German",
+                      "birthYear": 1777,
+                      "knownFor": "Gaussian distribution",
+                      "field": "Number Theory"
+                    }
+                  ],
+                  "total": 5,
+                  "limit": 10,
+                  "offset": 0
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Colors"
+        ],
+        "summary": "Create a color",
+        "description": "Add a new color to the collection.",
+        "operationId": "createColor",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ColorCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Color created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Color"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/colors/{colorId}": {
+      "get": {
+        "tags": [
+          "Colors"
+        ],
+        "summary": "Get a color by ID",
+        "description": "Retrieve a single color by its unique identifier.",
+        "operationId": "getColor",
+        "parameters": [
+          {
+            "name": "colorId",
+            "in": "path",
+            "required": true,
+            "description": "Unique color identifier",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A single color",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Color"
+                },
+                "example": {
+                  "id": 1,
+                  "name": "Leonhard Euler",
+                  "nationality": "Swiss",
+                  "birthYear": 1707,
+                  "knownFor": "Euler's formula",
+                  "field": "Analysis"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Colors"
+        ],
+        "summary": "Delete a color",
+        "description": "Permanently remove a color from the collection.",
+        "operationId": "deleteColor",
+        "parameters": [
+          {
+            "name": "colorId",
+            "in": "path",
+            "required": true,
+            "description": "Unique color identifier",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Color deleted successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Bizarre-Key",
+        "description": "API key for authentication"
+      }
+    },
+    "parameters": {
+      "LimitParam": {
+        "name": "limit",
+        "in": "query",
+        "description": "Maximum number of items to return (1-50)",
+        "schema": {
+          "type": "integer",
+          "default": 10,
+          "maximum": 50
+        }
+      },
+      "OffsetParam": {
+        "name": "offset",
+        "in": "query",
+        "description": "Number of items to skip for pagination",
+        "schema": {
+          "type": "integer",
+          "default": 0
+        }
+      },
+      "SortParam": {
+        "name": "sort",
+        "in": "query",
+        "description": "Sort order",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "asc",
+            "desc"
+          ],
+          "default": "asc"
+        }
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error code"
+          },
+          "message": {
+            "type": "string",
+            "description": "Human-readable error message"
+          }
+        },
+        "required": [
+          "error",
+          "message"
+        ]
+      },
+      "Color": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique color identifier",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the color",
+            "example": "Leonhard Euler"
+          },
+          "nationality": {
+            "type": "string",
+            "description": "Color origin country",
+            "example": "Swiss"
+          },
+          "birthYear": {
+            "type": "integer",
+            "description": "Year the color was first observed",
+            "example": 1707
+          },
+          "knownFor": {
+            "type": "string",
+            "description": "What this color is famous for",
+            "example": "Euler's formula"
+          },
+          "field": {
+            "type": "string",
+            "description": "Color family",
+            "example": "Analysis"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
+      },
+      "ColorCreate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the color",
+            "example": "Leonhard Euler"
+          },
+          "nationality": {
+            "type": "string",
+            "description": "Color origin country",
+            "example": "Swiss"
+          },
+          "birthYear": {
+            "type": "integer",
+            "description": "Year the color was first observed",
+            "example": 1707
+          },
+          "knownFor": {
+            "type": "string",
+            "description": "What this color is famous for",
+            "example": "Euler's formula"
+          },
+          "field": {
+            "type": "string",
+            "description": "Color family",
+            "example": "Analysis"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Bad Request - invalid request parameters",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "error": "bad_request",
+              "message": "Invalid request parameters"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Unauthorized - missing or invalid API key",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "error": "unauthorized",
+              "message": "Missing or invalid API key"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Not Found - the requested resource was not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "error": "not_found",
+              "message": "The requested resource was not found"
+            }
+          }
+        }
+      },
+      "RateLimited": {
+        "description": "Rate Limited - too many requests",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "error": "rate_limited",
+              "message": "Too many requests. Please wait and try again."
+            }
+          }
+        }
+      }
+    }
+  }
+}

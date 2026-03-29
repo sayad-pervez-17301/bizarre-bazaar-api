@@ -1,0 +1,21 @@
+# Bizarre Bazaar API
+
+> The Bizarre Bazaar API is a RESTful service for managing six unique collections: Fruits, Vegetables, Legumes, Colors, Animals, and Movies. Each collection supports full CRUD operations with pagination and sorting.
+
+## Quick Reference
+
+- **Version:** 1.0.0
+- **Authentication:** API key in `X-Bizarre-Key` header
+- **Rate Limit:** 100 requests per minute per API key
+- **Resources:** Fruits, Vegetables, Legumes, Colors, Animals, Movies
+- **Operations per resource:** List (GET), Get by ID (GET), Create (POST), Delete (DELETE)
+- **Common query params:** `limit` (default 10, max 50), `offset` (default 0), `sort` (asc|desc)
+
+## Documentation
+
+- [fruits.md](combinations/modular-markdowns/fruits.md): Fruits API Reference
+- [vegetables.md](combinations/modular-markdowns/vegetables.md): Vegetables API Reference
+- [legumes.md](combinations/modular-markdowns/legumes.md): Legumes API Reference
+- [colors.md](combinations/modular-markdowns/colors.md): Colors API Reference
+- [animals.md](combinations/modular-markdowns/animals.md): Animals API Reference
+- [movies.md](combinations/modular-markdowns/movies.md): Movies API Reference

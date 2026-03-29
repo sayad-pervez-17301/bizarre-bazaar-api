@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bizarre Bazaar API - Documentation</title>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; max-width: 740px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; }
+        code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
+        a { color: #0366d6; }
+        h1 { border-bottom: 2px solid #eee; padding-bottom: 0.3em; }
+        h2 { margin-top: 1.5em; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #f8f8f8; }
+    </style>
+</head>
+<body>
+    <h1>Bizarre Bazaar API</h1>
+    <p><strong>Version 1.0.0</strong></p>
+    <p>The Bizarre Bazaar API is a RESTful service for managing six unique collections: Fruits, Vegetables, Legumes, Colors, Animals, and Movies. Each collection supports full CRUD operations with pagination and sorting.</p>
+
+    <h2>Machine-Readable Documentation</h2>
+    <ul>
+        <li><a href="llm.txt">llm.txt</a> - Overview and documentation links</li>
+        <li><a href="llm-full.txt">llm-full.txt</a> - Complete inline documentation</li>
+    </ul>
+
+    <h2>Available Resources</h2>
+    <table>
+        <tr><th>Endpoint</th><th>Description</th></tr>
+        <tr><td><code>/fruits</code></td><td>Manage your fruit collection.</td></tr><tr><td><code>/vegetables</code></td><td>Browse and manage vegetables.</td></tr><tr><td><code>/legumes</code></td><td>Explore the legume catalog.</td></tr><tr><td><code>/colors</code></td><td>Discover and manage colors.</td></tr><tr><td><code>/animals</code></td><td>Catalog of animals.</td></tr><tr><td><code>/movies</code></td><td>Browse the movie database.</td></tr>
+    </table>
+
+    <h2>Authentication</h2>
+    <p>Include your API key in the <code>X-Bizarre-Key</code> header with every request.</p>
+
+    <h2>Rate Limiting</h2>
+    <p>100 requests per minute per API key. Rate-limit info is returned in <code>X-RateLimit-*</code> response headers.</p>
+</body>
+</html>

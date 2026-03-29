@@ -1,0 +1,224 @@
+openapi: 3.0.3
+info:
+  title: Bizarre Bazaar API - Fruits
+  version: 1.0.0
+  description: Manage your fruit collection. Part of the Bizarre Bazaar API.
+servers:
+- url: /
+  description: Current host
+security:
+- apiKeyAuth: []
+paths:
+  /fruits:
+    get:
+      tags:
+      - Fruits
+      summary: List all fruits
+      description: Manage your fruit collection.
+      operationId: listFruits
+      parameters:
+      - name: limit
+        in: query
+        description: Max items to return (1-50)
+        schema:
+          type: integer
+          default: 10
+          maximum: 50
+      - name: offset
+        in: query
+        description: Items to skip
+        schema:
+          type: integer
+          default: 0
+      - name: sort
+        in: query
+        description: Sort order
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: asc
+      responses:
+        '200':
+          description: A paginated list of fruits
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: &id002
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: Unique fruit identifier
+                          example: 1
+                        name:
+                          type: string
+                          description: Name of the fruit
+                          example: Toyota
+                        origin:
+                          type: string
+                          description: Country where the fruit grows
+                          example: Japan
+                        founded:
+                          type: integer
+                          description: Year first cultivated
+                          example: 1937
+                        horsepower:
+                          type: integer
+                          description: Vigor rating
+                          example: 203
+                        topSpeed:
+                          type: string
+                          description: Maximum ripening velocity
+                          example: 180 km/h
+                      required:
+                      - id
+                      - name
+                  total:
+                    type: integer
+                    description: Total number of items
+                  limit:
+                    type: integer
+                    description: Items per page
+                  offset:
+                    type: integer
+                    description: Offset from start
+              example:
+                data:
+                - &id004
+                  id: 1
+                  name: Toyota
+                  origin: Japan
+                  founded: 1937
+                  horsepower: 203
+                  topSpeed: 180 km/h
+                - id: 2
+                  name: BMW
+                  origin: Germany
+                  founded: 1916
+                  horsepower: 335
+                  topSpeed: 250 km/h
+                total: 5
+                limit: 10
+                offset: 0
+        '401': &id003
+          description: Unauthorized - missing or invalid API key
+          content:
+            application/json:
+              schema: &id001
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error code
+                  message:
+                    type: string
+                    description: Human-readable error message
+                required:
+                - error
+                - message
+        '429':
+          description: Rate Limited - too many requests
+          content:
+            application/json:
+              schema: *id001
+    post:
+      tags:
+      - Fruits
+      summary: Create a fruit
+      description: Add a new fruit to the collection.
+      operationId: createFruit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the fruit
+                  example: Toyota
+                origin:
+                  type: string
+                  description: Country where the fruit grows
+                  example: Japan
+                founded:
+                  type: integer
+                  description: Year first cultivated
+                  example: 1937
+                horsepower:
+                  type: integer
+                  description: Vigor rating
+                  example: 203
+                topSpeed:
+                  type: string
+                  description: Maximum ripening velocity
+                  example: 180 km/h
+              required:
+              - name
+      responses:
+        '201':
+          description: Fruit created successfully
+          content:
+            application/json:
+              schema: *id002
+        '400':
+          description: Bad Request - invalid parameters
+          content:
+            application/json:
+              schema: *id001
+        '401': *id003
+  /fruits/{fruitId}:
+    get:
+      tags:
+      - Fruits
+      summary: Get a fruit by ID
+      description: Retrieve a single fruit by its unique identifier.
+      operationId: getFruit
+      parameters:
+      - &id005
+        name: fruitId
+        in: path
+        required: true
+        description: Unique fruit identifier
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: A single fruit
+          content:
+            application/json:
+              schema: *id002
+              example: *id004
+        '401': *id003
+        '404': &id006
+          description: Not Found - resource does not exist
+          content:
+            application/json:
+              schema: *id001
+    delete:
+      tags:
+      - Fruits
+      summary: Delete a fruit
+      description: Permanently remove a fruit from the collection.
+      operationId: deleteFruit
+      parameters:
+      - *id005
+      responses:
+        '204':
+          description: Fruit deleted successfully
+        '401': *id003
+        '404': *id006
+components:
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Bizarre-Key
+      description: API key for authentication

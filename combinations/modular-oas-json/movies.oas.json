@@ -1,0 +1,409 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Bizarre Bazaar API - Movies",
+    "version": "1.0.0",
+    "description": "Browse the movie database. Part of the Bizarre Bazaar API."
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Current host"
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "paths": {
+    "/movies": {
+      "get": {
+        "tags": [
+          "Movies"
+        ],
+        "summary": "List all movies",
+        "description": "Browse the movie database.",
+        "operationId": "listMovies",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/LimitParam"
+          },
+          {
+            "$ref": "#/components/parameters/OffsetParam"
+          },
+          {
+            "$ref": "#/components/parameters/SortParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A paginated list of movies",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Movie"
+                      }
+                    },
+                    "total": {
+                      "type": "integer",
+                      "description": "Total number of items"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "Items per page"
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "Offset from start"
+                    }
+                  }
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": 1,
+                      "name": "Hydrogen",
+                      "symbol": "H",
+                      "atomicNumber": 1,
+                      "atomicMass": 1.008,
+                      "category": "Nonmetal"
+                    },
+                    {
+                      "id": 2,
+                      "name": "Helium",
+                      "symbol": "He",
+                      "atomicNumber": 2,
+                      "atomicMass": 4.003,
+                      "category": "Noble Gas"
+                    }
+                  ],
+                  "total": 5,
+                  "limit": 10,
+                  "offset": 0
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Movies"
+        ],
+        "summary": "Create a movie",
+        "description": "Add a new movie to the collection.",
+        "operationId": "createMovie",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MovieCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Movie created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Movie"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/movies/{movieId}": {
+      "get": {
+        "tags": [
+          "Movies"
+        ],
+        "summary": "Get a movie by ID",
+        "description": "Retrieve a single movie by its unique identifier.",
+        "operationId": "getMovie",
+        "parameters": [
+          {
+            "name": "movieId",
+            "in": "path",
+            "required": true,
+            "description": "Unique movie identifier",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A single movie",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Movie"
+                },
+                "example": {
+                  "id": 1,
+                  "name": "Hydrogen",
+                  "symbol": "H",
+                  "atomicNumber": 1,
+                  "atomicMass": 1.008,
+                  "category": "Nonmetal"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Movies"
+        ],
+        "summary": "Delete a movie",
+        "description": "Permanently remove a movie from the collection.",
+        "operationId": "deleteMovie",
+        "parameters": [
+          {
+            "name": "movieId",
+            "in": "path",
+            "required": true,
+            "description": "Unique movie identifier",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Movie deleted successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Bizarre-Key",
+        "description": "API key for authentication"
+      }
+    },
+    "parameters": {
+      "LimitParam": {
+        "name": "limit",
+        "in": "query",
+        "description": "Maximum number of items to return (1-50)",
+        "schema": {
+          "type": "integer",
+          "default": 10,
+          "maximum": 50
+        }
+      },
+      "OffsetParam": {
+        "name": "offset",
+        "in": "query",
+        "description": "Number of items to skip for pagination",
+        "schema": {
+          "type": "integer",
+          "default": 0
+        }
+      },
+      "SortParam": {
+        "name": "sort",
+        "in": "query",
+        "description": "Sort order",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "asc",
+            "desc"
+          ],
+          "default": "asc"
+        }
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error code"
+          },
+          "message": {
+            "type": "string",
+            "description": "Human-readable error message"
+          }
+        },
+        "required": [
+          "error",
+          "message"
+        ]
+      },
+      "Movie": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique movie identifier",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "Title of the movie",
+            "example": "Hydrogen"
+          },
+          "symbol": {
+            "type": "string",
+            "description": "Movie rating symbol",
+            "example": "H"
+          },
+          "atomicNumber": {
+            "type": "integer",
+            "description": "Box office ranking",
+            "example": 1
+          },
+          "atomicMass": {
+            "type": "number",
+            "description": "Critical mass score",
+            "example": 1.008
+          },
+          "category": {
+            "type": "string",
+            "description": "Genre classification",
+            "example": "Nonmetal"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
+      },
+      "MovieCreate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Title of the movie",
+            "example": "Hydrogen"
+          },
+          "symbol": {
+            "type": "string",
+            "description": "Movie rating symbol",
+            "example": "H"
+          },
+          "atomicNumber": {
+            "type": "integer",
+            "description": "Box office ranking",
+            "example": 1
+          },
+          "atomicMass": {
+            "type": "number",
+            "description": "Critical mass score",
+            "example": 1.008
+          },
+          "category": {
+            "type": "string",
+            "description": "Genre classification",
+            "example": "Nonmetal"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Bad Request - invalid request parameters",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "error": "bad_request",
+              "message": "Invalid request parameters"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Unauthorized - missing or invalid API key",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "error": "unauthorized",
+              "message": "Missing or invalid API key"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Not Found - the requested resource was not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "error": "not_found",
+              "message": "The requested resource was not found"
+            }
+          }
+        }
+      },
+      "RateLimited": {
+        "description": "Rate Limited - too many requests",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "error": "rate_limited",
+              "message": "Too many requests. Please wait and try again."
+            }
+          }
+        }
+      }
+    }
+  }
+}

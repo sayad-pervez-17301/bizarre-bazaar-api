@@ -1,0 +1,262 @@
+openapi: 3.0.3
+info:
+  title: Bizarre Bazaar API - Legumes
+  version: 1.0.0
+  description: Explore the legume catalog. Part of the Bizarre Bazaar API.
+servers:
+- url: /
+  description: Current host
+security:
+- apiKeyAuth: []
+paths:
+  /legumes:
+    get:
+      tags:
+      - Legumes
+      summary: List all legumes
+      description: Explore the legume catalog.
+      operationId: listLegumes
+      parameters:
+      - $ref: '#/components/parameters/LimitParam'
+      - $ref: '#/components/parameters/OffsetParam'
+      - $ref: '#/components/parameters/SortParam'
+      responses:
+        '200':
+          description: A paginated list of legumes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: &id001
+                      $ref: '#/components/schemas/Legume'
+                  total:
+                    type: integer
+                    description: Total number of items
+                  limit:
+                    type: integer
+                    description: Items per page
+                  offset:
+                    type: integer
+                    description: Offset from start
+              example:
+                data:
+                - &id003
+                  id: 1
+                  name: Mercury
+                  distanceFromSunKm: 57900000
+                  moons: 0
+                  orbitalPeriodDays: 88.0
+                  diameter: 4,879 km
+                - id: 2
+                  name: Venus
+                  distanceFromSunKm: 108200000
+                  moons: 0
+                  orbitalPeriodDays: 225.0
+                  diameter: 12,104 km
+                total: 5
+                limit: 10
+                offset: 0
+        '401': &id002
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+    post:
+      tags:
+      - Legumes
+      summary: Create a legume
+      description: Add a new legume to the collection.
+      operationId: createLegume
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LegumeCreate'
+      responses:
+        '201':
+          description: Legume created successfully
+          content:
+            application/json:
+              schema: *id001
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401': *id002
+  /legumes/{legumeId}:
+    get:
+      tags:
+      - Legumes
+      summary: Get a legume by ID
+      description: Retrieve a single legume by its unique identifier.
+      operationId: getLegume
+      parameters:
+      - &id004
+        name: legumeId
+        in: path
+        required: true
+        description: Unique legume identifier
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: A single legume
+          content:
+            application/json:
+              schema: *id001
+              example: *id003
+        '401': *id002
+        '404': &id005
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags:
+      - Legumes
+      summary: Delete a legume
+      description: Permanently remove a legume from the collection.
+      operationId: deleteLegume
+      parameters:
+      - *id004
+      responses:
+        '204':
+          description: Legume deleted successfully
+        '401': *id002
+        '404': *id005
+components:
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Bizarre-Key
+      description: API key for authentication
+  parameters:
+    LimitParam:
+      name: limit
+      in: query
+      description: Maximum number of items to return (1-50)
+      schema:
+        type: integer
+        default: 10
+        maximum: 50
+    OffsetParam:
+      name: offset
+      in: query
+      description: Number of items to skip for pagination
+      schema:
+        type: integer
+        default: 0
+    SortParam:
+      name: sort
+      in: query
+      description: Sort order
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: asc
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+      required:
+      - error
+      - message
+    Legume:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique legume identifier
+          example: 1
+        name:
+          type: string
+          description: Name of the legume
+          example: Mercury
+        distanceFromSunKm:
+          type: integer
+          description: Distance from the vine in km
+          example: 57900000
+        moons:
+          type: integer
+          description: Number of companion pods
+          example: 0
+        orbitalPeriodDays:
+          type: number
+          description: Growth cycle in days
+          example: 88.0
+        diameter:
+          type: string
+          description: Legume diameter
+          example: 4,879 km
+      required:
+      - id
+      - name
+    LegumeCreate:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the legume
+          example: Mercury
+        distanceFromSunKm:
+          type: integer
+          description: Distance from the vine in km
+          example: 57900000
+        moons:
+          type: integer
+          description: Number of companion pods
+          example: 0
+        orbitalPeriodDays:
+          type: number
+          description: Growth cycle in days
+          example: 88.0
+        diameter:
+          type: string
+          description: Legume diameter
+          example: 4,879 km
+      required:
+      - name
+  responses:
+    BadRequest:
+      description: Bad Request - invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: bad_request
+            message: Invalid request parameters
+    Unauthorized:
+      description: Unauthorized - missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: unauthorized
+            message: Missing or invalid API key
+    NotFound:
+      description: Not Found - the requested resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: not_found
+            message: The requested resource was not found
+    RateLimited:
+      description: Rate Limited - too many requests
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: rate_limited
+            message: Too many requests. Please wait and try again.

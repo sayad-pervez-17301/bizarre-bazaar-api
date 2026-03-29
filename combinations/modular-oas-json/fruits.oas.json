@@ -1,0 +1,409 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Bizarre Bazaar API - Fruits",
+    "version": "1.0.0",
+    "description": "Manage your fruit collection. Part of the Bizarre Bazaar API."
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Current host"
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "paths": {
+    "/fruits": {
+      "get": {
+        "tags": [
+          "Fruits"
+        ],
+        "summary": "List all fruits",
+        "description": "Manage your fruit collection.",
+        "operationId": "listFruits",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/LimitParam"
+          },
+          {
+            "$ref": "#/components/parameters/OffsetParam"
+          },
+          {
+            "$ref": "#/components/parameters/SortParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A paginated list of fruits",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Fruit"
+                      }
+                    },
+                    "total": {
+                      "type": "integer",
+                      "description": "Total number of items"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "Items per page"
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "Offset from start"
+                    }
+                  }
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": 1,
+                      "name": "Toyota",
+                      "origin": "Japan",
+                      "founded": 1937,
+                      "horsepower": 203,
+                      "topSpeed": "180 km/h"
+                    },
+                    {
+                      "id": 2,
+                      "name": "BMW",
+                      "origin": "Germany",
+                      "founded": 1916,
+                      "horsepower": 335,
+                      "topSpeed": "250 km/h"
+                    }
+                  ],
+                  "total": 5,
+                  "limit": 10,
+                  "offset": 0
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Fruits"
+        ],
+        "summary": "Create a fruit",
+        "description": "Add a new fruit to the collection.",
+        "operationId": "createFruit",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FruitCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Fruit created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Fruit"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/fruits/{fruitId}": {
+      "get": {
+        "tags": [
+          "Fruits"
+        ],
+        "summary": "Get a fruit by ID",
+        "description": "Retrieve a single fruit by its unique identifier.",
+        "operationId": "getFruit",
+        "parameters": [
+          {
+            "name": "fruitId",
+            "in": "path",
+            "required": true,
+            "description": "Unique fruit identifier",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A single fruit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Fruit"
+                },
+                "example": {
+                  "id": 1,
+                  "name": "Toyota",
+                  "origin": "Japan",
+                  "founded": 1937,
+                  "horsepower": 203,
+                  "topSpeed": "180 km/h"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Fruits"
+        ],
+        "summary": "Delete a fruit",
+        "description": "Permanently remove a fruit from the collection.",
+        "operationId": "deleteFruit",
+        "parameters": [
+          {
+            "name": "fruitId",
+            "in": "path",
+            "required": true,
+            "description": "Unique fruit identifier",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Fruit deleted successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Bizarre-Key",
+        "description": "API key for authentication"
+      }
+    },
+    "parameters": {
+      "LimitParam": {
+        "name": "limit",
+        "in": "query",
+        "description": "Maximum number of items to return (1-50)",
+        "schema": {
+          "type": "integer",
+          "default": 10,
+          "maximum": 50
+        }
+      },
+      "OffsetParam": {
+        "name": "offset",
+        "in": "query",
+        "description": "Number of items to skip for pagination",
+        "schema": {
+          "type": "integer",
+          "default": 0
+        }
+      },
+      "SortParam": {
+        "name": "sort",
+        "in": "query",
+        "description": "Sort order",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "asc",
+            "desc"
+          ],
+          "default": "asc"
+        }
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error code"
+          },
+          "message": {
+            "type": "string",
+            "description": "Human-readable error message"
+          }
+        },
+        "required": [
+          "error",
+          "message"
+        ]
+      },
+      "Fruit": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique fruit identifier",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the fruit",
+            "example": "Toyota"
+          },
+          "origin": {
+            "type": "string",
+            "description": "Country where the fruit grows",
+            "example": "Japan"
+          },
+          "founded": {
+            "type": "integer",
+            "description": "Year first cultivated",
+            "example": 1937
+          },
+          "horsepower": {
+            "type": "integer",
+            "description": "Vigor rating",
+            "example": 203
+          },
+          "topSpeed": {
+            "type": "string",
+            "description": "Maximum ripening velocity",
+            "example": "180 km/h"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
+      },
+      "FruitCreate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the fruit",
+            "example": "Toyota"
+          },
+          "origin": {
+            "type": "string",
+            "description": "Country where the fruit grows",
+            "example": "Japan"
+          },
+          "founded": {
+            "type": "integer",
+            "description": "Year first cultivated",
+            "example": 1937
+          },
+          "horsepower": {
+            "type": "integer",
+            "description": "Vigor rating",
+            "example": 203
+          },
+          "topSpeed": {
+            "type": "string",
+            "description": "Maximum ripening velocity",
+            "example": "180 km/h"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Bad Request - invalid request parameters",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "error": "bad_request",
+              "message": "Invalid request parameters"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Unauthorized - missing or invalid API key",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "error": "unauthorized",
+              "message": "Missing or invalid API key"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Not Found - the requested resource was not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "error": "not_found",
+              "message": "The requested resource was not found"
+            }
+          }
+        }
+      },
+      "RateLimited": {
+        "description": "Rate Limited - too many requests",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "error": "rate_limited",
+              "message": "Too many requests. Please wait and try again."
+            }
+          }
+        }
+      }
+    }
+  }
+}

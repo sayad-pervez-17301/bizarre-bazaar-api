@@ -1,0 +1,21 @@
+# Bizarre Bazaar API
+
+> The Bizarre Bazaar API is a RESTful service for managing six unique collections: Fruits, Vegetables, Legumes, Colors, Animals, and Movies. Each collection supports full CRUD operations with pagination and sorting.
+
+## Quick Reference
+
+- **Version:** 1.0.0
+- **Authentication:** API key in `X-Bizarre-Key` header
+- **Rate Limit:** 100 requests per minute per API key
+- **Resources:** Fruits, Vegetables, Legumes, Colors, Animals, Movies
+- **Operations per resource:** List (GET), Get by ID (GET), Create (POST), Delete (DELETE)
+- **Common query params:** `limit` (default 10, max 50), `offset` (default 0), `sort` (asc|desc)
+
+## Documentation
+
+- [fruits.oas.dereferenced.json](combinations/modular-dereferenced-oas-json/fruits.oas.dereferenced.json): Fruits Dereferenced OpenAPI Spec (JSON)
+- [vegetables.oas.dereferenced.json](combinations/modular-dereferenced-oas-json/vegetables.oas.dereferenced.json): Vegetables Dereferenced OpenAPI Spec (JSON)
+- [legumes.oas.dereferenced.json](combinations/modular-dereferenced-oas-json/legumes.oas.dereferenced.json): Legumes Dereferenced OpenAPI Spec (JSON)
+- [colors.oas.dereferenced.json](combinations/modular-dereferenced-oas-json/colors.oas.dereferenced.json): Colors Dereferenced OpenAPI Spec (JSON)
+- [animals.oas.dereferenced.json](combinations/modular-dereferenced-oas-json/animals.oas.dereferenced.json): Animals Dereferenced OpenAPI Spec (JSON)
+- [movies.oas.dereferenced.json](combinations/modular-dereferenced-oas-json/movies.oas.dereferenced.json): Movies Dereferenced OpenAPI Spec (JSON)
