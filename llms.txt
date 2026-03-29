@@ -13,9 +13,9 @@
 
 ## Documentation
 
-- [fruits.oas.yml](combinations/modular-oas-yml/fruits.oas.yml): Fruits OpenAPI Spec (YAML)
-- [vegetables.oas.yml](combinations/modular-oas-yml/vegetables.oas.yml): Vegetables OpenAPI Spec (YAML)
-- [legumes.oas.yml](combinations/modular-oas-yml/legumes.oas.yml): Legumes OpenAPI Spec (YAML)
-- [colors.oas.yml](combinations/modular-oas-yml/colors.oas.yml): Colors OpenAPI Spec (YAML)
-- [animals.oas.yml](combinations/modular-oas-yml/animals.oas.yml): Animals OpenAPI Spec (YAML)
-- [movies.oas.yml](combinations/modular-oas-yml/movies.oas.yml): Movies OpenAPI Spec (YAML)
+- [fruits.md](combinations/modular-markdowns/fruits.md): Fruits API Reference
+- [vegetables.md](combinations/modular-markdowns/vegetables.md): Vegetables API Reference
+- [legumes.md](combinations/modular-markdowns/legumes.md): Legumes API Reference
+- [colors.md](combinations/modular-markdowns/colors.md): Colors API Reference
+- [animals.md](combinations/modular-markdowns/animals.md): Animals API Reference
+- [movies.md](combinations/modular-markdowns/movies.md): Movies API Reference
