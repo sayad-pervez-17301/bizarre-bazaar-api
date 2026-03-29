@@ -1,9 +1,24 @@
 <!DOCTYPE html>
+<!-- LLM Documentation: llms.txt llms-full.txt -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bizarre Bazaar API - Documentation</title>
+
+    <!-- Hook 1: link rel="help" -->
+    <link rel="help" href="llms.txt" type="text/plain" title="LLMs.txt - API documentation for LLMs">
+    <link rel="help" href="llms-full.txt" type="text/plain" title="LLMs-full.txt - Complete API documentation for LLMs">
+
+    <!-- Hook 2: link rel="alternate" -->
+    <link rel="alternate" href="llms.txt" type="text/plain" title="API docs (llms.txt)">
+    <link rel="alternate" href="llms-full.txt" type="text/plain" title="API docs full (llms-full.txt)">
+
+    <!-- Hook 3: meta tags -->
+    <meta name="llms-txt" content="llms.txt">
+    <meta name="llms-full-txt" content="llms-full.txt">
+    <meta name="description" content="Bizarre Bazaar API documentation. Machine-readable docs available at llms.txt and llms-full.txt">
+
     <style>
         body { font-family: system-ui, -apple-system, sans-serif; max-width: 740px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; }
         code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
@@ -13,9 +28,22 @@
         table { border-collapse: collapse; width: 100%; }
         th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
         th { background: #f8f8f8; }
+        nav { display: flex; gap: 1.5rem; padding: 0.5rem 0; border-bottom: 1px solid #eee; margin-bottom: 1rem; }
+        nav a { text-decoration: none; font-weight: 500; }
+        footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #eee; font-size: 0.85em; color: #666; }
     </style>
 </head>
 <body>
+    <!-- Hook 4: HTML comment for crawlers -->
+    <!-- Machine-readable API documentation: llms.txt (overview), llms-full.txt (complete) -->
+
+    <!-- Hook 5: Nav bar with Docs link -->
+    <nav>
+        <a href="#">Home</a>
+        <a href="#resources">Resources</a>
+        <a href="llms.txt">Docs</a>
+    </nav>
+
     <h1>Bizarre Bazaar API</h1>
     <p><strong>Version 1.0.0</strong></p>
     <p>The Bizarre Bazaar API is a RESTful service for managing six unique collections: Fruits, Vegetables, Legumes, Colors, Animals, and Movies. Each collection supports full CRUD operations with pagination and sorting.</p>
@@ -26,7 +54,7 @@
         <li><a href="llms-full.txt">llms-full.txt</a> - Complete inline documentation</li>
     </ul>
 
-    <h2>Available Resources</h2>
+    <h2 id="resources">Available Resources</h2>
     <table>
         <tr><th>Endpoint</th><th>Description</th></tr>
         <tr><td><code>/fruits</code></td><td>Manage your fruit collection.</td></tr><tr><td><code>/vegetables</code></td><td>Browse and manage vegetables.</td></tr><tr><td><code>/legumes</code></td><td>Explore the legume catalog.</td></tr><tr><td><code>/colors</code></td><td>Discover and manage colors.</td></tr><tr><td><code>/animals</code></td><td>Catalog of animals.</td></tr><tr><td><code>/movies</code></td><td>Browse the movie database.</td></tr>
@@ -37,5 +65,10 @@
 
     <h2>Rate Limiting</h2>
     <p>100 requests per minute per API key. Rate-limit info is returned in <code>X-RateLimit-*</code> response headers.</p>
+
+    <!-- Hook 6: Visible footer hyperlink -->
+    <footer>
+        <p>Bizarre Bazaar API v1.0.0 &mdash; <a href="llms.txt">llms.txt</a> · <a href="llms-full.txt">llms-full.txt</a></p>
+    </footer>
 </body>
 </html>

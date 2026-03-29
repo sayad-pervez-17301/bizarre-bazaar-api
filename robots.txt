@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+# LLM-friendly documentation
+Sitemap: llms.txt
+Sitemap: llms-full.txt
