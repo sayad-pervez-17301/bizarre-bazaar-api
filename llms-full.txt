@@ -1,0 +1,1204 @@
+# Bizarre Bazaar API - Complete Documentation
+
+> This file contains the complete API documentation for the Bizarre Bazaar API.
+
+openapi: 3.0.3
+info:
+  title: Bizarre Bazaar API
+  version: 1.0.0
+  description: 'The Bizarre Bazaar API is a RESTful service for managing six unique collections: Fruits, Vegetables, Legumes, Colors, Animals, and Movies. Each collection supports full CRUD operations with
+    pagination and sorting.'
+servers:
+- url: /
+  description: Current host
+security:
+- apiKeyAuth: []
+paths:
+  /fruits:
+    get:
+      tags:
+      - Fruits
+      summary: List all fruits
+      description: Manage your fruit collection.
+      operationId: listFruits
+      parameters:
+      - name: limit
+        in: query
+        description: Max items to return (1-50)
+        schema:
+          type: integer
+          default: 10
+          maximum: 50
+      - name: offset
+        in: query
+        description: Items to skip
+        schema:
+          type: integer
+          default: 0
+      - name: sort
+        in: query
+        description: Sort order
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: asc
+      responses:
+        '200':
+          description: A paginated list of fruits
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: &id002
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: Unique fruit identifier
+                          example: 1
+                        name:
+                          type: string
+                          description: Name of the fruit
+                          example: Toyota
+                        origin:
+                          type: string
+                          description: Country where the fruit grows
+                          example: Japan
+                        founded:
+                          type: integer
+                          description: Year first cultivated
+                          example: 1937
+                        horsepower:
+                          type: integer
+                          description: Vigor rating
+                          example: 203
+                        topSpeed:
+                          type: string
+                          description: Maximum ripening velocity
+                          example: 180 km/h
+                      required:
+                      - id
+                      - name
+                  total:
+                    type: integer
+                    description: Total number of items
+                  limit:
+                    type: integer
+                    description: Items per page
+                  offset:
+                    type: integer
+                    description: Offset from start
+              example:
+                data:
+                - &id004
+                  id: 1
+                  name: Toyota
+                  origin: Japan
+                  founded: 1937
+                  horsepower: 203
+                  topSpeed: 180 km/h
+                - id: 2
+                  name: BMW
+                  origin: Germany
+                  founded: 1916
+                  horsepower: 335
+                  topSpeed: 250 km/h
+                total: 5
+                limit: 10
+                offset: 0
+        '401': &id003
+          description: Unauthorized - missing or invalid API key
+          content:
+            application/json:
+              schema: &id001
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error code
+                  message:
+                    type: string
+                    description: Human-readable error message
+                required:
+                - error
+                - message
+        '429':
+          description: Rate Limited - too many requests
+          content:
+            application/json:
+              schema: *id001
+    post:
+      tags:
+      - Fruits
+      summary: Create a fruit
+      description: Add a new fruit to the collection.
+      operationId: createFruit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the fruit
+                  example: Toyota
+                origin:
+                  type: string
+                  description: Country where the fruit grows
+                  example: Japan
+                founded:
+                  type: integer
+                  description: Year first cultivated
+                  example: 1937
+                horsepower:
+                  type: integer
+                  description: Vigor rating
+                  example: 203
+                topSpeed:
+                  type: string
+                  description: Maximum ripening velocity
+                  example: 180 km/h
+              required:
+              - name
+      responses:
+        '201':
+          description: Fruit created successfully
+          content:
+            application/json:
+              schema: *id002
+        '400':
+          description: Bad Request - invalid parameters
+          content:
+            application/json:
+              schema: *id001
+        '401': *id003
+  /fruits/{fruitId}:
+    get:
+      tags:
+      - Fruits
+      summary: Get a fruit by ID
+      description: Retrieve a single fruit by its unique identifier.
+      operationId: getFruit
+      parameters:
+      - &id005
+        name: fruitId
+        in: path
+        required: true
+        description: Unique fruit identifier
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: A single fruit
+          content:
+            application/json:
+              schema: *id002
+              example: *id004
+        '401': *id003
+        '404': &id006
+          description: Not Found - resource does not exist
+          content:
+            application/json:
+              schema: *id001
+    delete:
+      tags:
+      - Fruits
+      summary: Delete a fruit
+      description: Permanently remove a fruit from the collection.
+      operationId: deleteFruit
+      parameters:
+      - *id005
+      responses:
+        '204':
+          description: Fruit deleted successfully
+        '401': *id003
+        '404': *id006
+  /vegetables:
+    get:
+      tags:
+      - Vegetables
+      summary: List all vegetables
+      description: Browse and manage vegetables.
+      operationId: listVegetables
+      parameters:
+      - name: limit
+        in: query
+        description: Max items to return (1-50)
+        schema:
+          type: integer
+          default: 10
+          maximum: 50
+      - name: offset
+        in: query
+        description: Items to skip
+        schema:
+          type: integer
+          default: 0
+      - name: sort
+        in: query
+        description: Sort order
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: asc
+      responses:
+        '200':
+          description: A paginated list of vegetables
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: &id007
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: Unique vegetable identifier
+                          example: 1
+                        name:
+                          type: string
+                          description: Name of the vegetable
+                          example: Germany
+                        leader:
+                          type: string
+                          description: Head gardener responsible for this vegetable
+                          example: Adolf Hitler
+                        joinedAxis:
+                          type: string
+                          description: Year this vegetable joined the garden alliance
+                          example: '1936'
+                        population:
+                          type: integer
+                          description: Number of seeds
+                          example: 69000000
+                        capitalCity:
+                          type: string
+                          description: Primary growing region
+                          example: Berlin
+                      required:
+                      - id
+                      - name
+                  total:
+                    type: integer
+                    description: Total number of items
+                  limit:
+                    type: integer
+                    description: Items per page
+                  offset:
+                    type: integer
+                    description: Offset from start
+              example:
+                data:
+                - &id009
+                  id: 1
+                  name: Germany
+                  leader: Adolf Hitler
+                  joinedAxis: '1936'
+                  population: 69000000
+                  capitalCity: Berlin
+                - id: 2
+                  name: Italy
+                  leader: Benito Mussolini
+                  joinedAxis: '1936'
+                  population: 45000000
+                  capitalCity: Rome
+                total: 5
+                limit: 10
+                offset: 0
+        '401': &id008
+          description: Unauthorized - missing or invalid API key
+          content:
+            application/json:
+              schema: *id001
+        '429':
+          description: Rate Limited - too many requests
+          content:
+            application/json:
+              schema: *id001
+    post:
+      tags:
+      - Vegetables
+      summary: Create a vegetable
+      description: Add a new vegetable to the collection.
+      operationId: createVegetable
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the vegetable
+                  example: Germany
+                leader:
+                  type: string
+                  description: Head gardener responsible for this vegetable
+                  example: Adolf Hitler
+                joinedAxis:
+                  type: string
+                  description: Year this vegetable joined the garden alliance
+                  example: '1936'
+                population:
+                  type: integer
+                  description: Number of seeds
+                  example: 69000000
+                capitalCity:
+                  type: string
+                  description: Primary growing region
+                  example: Berlin
+              required:
+              - name
+      responses:
+        '201':
+          description: Vegetable created successfully
+          content:
+            application/json:
+              schema: *id007
+        '400':
+          description: Bad Request - invalid parameters
+          content:
+            application/json:
+              schema: *id001
+        '401': *id008
+  /vegetables/{vegetableId}:
+    get:
+      tags:
+      - Vegetables
+      summary: Get a vegetable by ID
+      description: Retrieve a single vegetable by its unique identifier.
+      operationId: getVegetable
+      parameters:
+      - &id010
+        name: vegetableId
+        in: path
+        required: true
+        description: Unique vegetable identifier
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: A single vegetable
+          content:
+            application/json:
+              schema: *id007
+              example: *id009
+        '401': *id008
+        '404': &id011
+          description: Not Found - resource does not exist
+          content:
+            application/json:
+              schema: *id001
+    delete:
+      tags:
+      - Vegetables
+      summary: Delete a vegetable
+      description: Permanently remove a vegetable from the collection.
+      operationId: deleteVegetable
+      parameters:
+      - *id010
+      responses:
+        '204':
+          description: Vegetable deleted successfully
+        '401': *id008
+        '404': *id011
+  /legumes:
+    get:
+      tags:
+      - Legumes
+      summary: List all legumes
+      description: Explore the legume catalog.
+      operationId: listLegumes
+      parameters:
+      - name: limit
+        in: query
+        description: Max items to return (1-50)
+        schema:
+          type: integer
+          default: 10
+          maximum: 50
+      - name: offset
+        in: query
+        description: Items to skip
+        schema:
+          type: integer
+          default: 0
+      - name: sort
+        in: query
+        description: Sort order
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: asc
+      responses:
+        '200':
+          description: A paginated list of legumes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: &id012
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: Unique legume identifier
+                          example: 1
+                        name:
+                          type: string
+                          description: Name of the legume
+                          example: Mercury
+                        distanceFromSunKm:
+                          type: integer
+                          description: Distance from the vine in km
+                          example: 57900000
+                        moons:
+                          type: integer
+                          description: Number of companion pods
+                          example: 0
+                        orbitalPeriodDays:
+                          type: number
+                          description: Growth cycle in days
+                          example: 88.0
+                        diameter:
+                          type: string
+                          description: Legume diameter
+                          example: 4,879 km
+                      required:
+                      - id
+                      - name
+                  total:
+                    type: integer
+                    description: Total number of items
+                  limit:
+                    type: integer
+                    description: Items per page
+                  offset:
+                    type: integer
+                    description: Offset from start
+              example:
+                data:
+                - &id014
+                  id: 1
+                  name: Mercury
+                  distanceFromSunKm: 57900000
+                  moons: 0
+                  orbitalPeriodDays: 88.0
+                  diameter: 4,879 km
+                - id: 2
+                  name: Venus
+                  distanceFromSunKm: 108200000
+                  moons: 0
+                  orbitalPeriodDays: 225.0
+                  diameter: 12,104 km
+                total: 5
+                limit: 10
+                offset: 0
+        '401': &id013
+          description: Unauthorized - missing or invalid API key
+          content:
+            application/json:
+              schema: *id001
+        '429':
+          description: Rate Limited - too many requests
+          content:
+            application/json:
+              schema: *id001
+    post:
+      tags:
+      - Legumes
+      summary: Create a legume
+      description: Add a new legume to the collection.
+      operationId: createLegume
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the legume
+                  example: Mercury
+                distanceFromSunKm:
+                  type: integer
+                  description: Distance from the vine in km
+                  example: 57900000
+                moons:
+                  type: integer
+                  description: Number of companion pods
+                  example: 0
+                orbitalPeriodDays:
+                  type: number
+                  description: Growth cycle in days
+                  example: 88.0
+                diameter:
+                  type: string
+                  description: Legume diameter
+                  example: 4,879 km
+              required:
+              - name
+      responses:
+        '201':
+          description: Legume created successfully
+          content:
+            application/json:
+              schema: *id012
+        '400':
+          description: Bad Request - invalid parameters
+          content:
+            application/json:
+              schema: *id001
+        '401': *id013
+  /legumes/{legumeId}:
+    get:
+      tags:
+      - Legumes
+      summary: Get a legume by ID
+      description: Retrieve a single legume by its unique identifier.
+      operationId: getLegume
+      parameters:
+      - &id015
+        name: legumeId
+        in: path
+        required: true
+        description: Unique legume identifier
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: A single legume
+          content:
+            application/json:
+              schema: *id012
+              example: *id014
+        '401': *id013
+        '404': &id016
+          description: Not Found - resource does not exist
+          content:
+            application/json:
+              schema: *id001
+    delete:
+      tags:
+      - Legumes
+      summary: Delete a legume
+      description: Permanently remove a legume from the collection.
+      operationId: deleteLegume
+      parameters:
+      - *id015
+      responses:
+        '204':
+          description: Legume deleted successfully
+        '401': *id013
+        '404': *id016
+  /colors:
+    get:
+      tags:
+      - Colors
+      summary: List all colors
+      description: Discover and manage colors.
+      operationId: listColors
+      parameters:
+      - name: limit
+        in: query
+        description: Max items to return (1-50)
+        schema:
+          type: integer
+          default: 10
+          maximum: 50
+      - name: offset
+        in: query
+        description: Items to skip
+        schema:
+          type: integer
+          default: 0
+      - name: sort
+        in: query
+        description: Sort order
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: asc
+      responses:
+        '200':
+          description: A paginated list of colors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: &id017
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: Unique color identifier
+                          example: 1
+                        name:
+                          type: string
+                          description: Name of the color
+                          example: Leonhard Euler
+                        nationality:
+                          type: string
+                          description: Color origin country
+                          example: Swiss
+                        birthYear:
+                          type: integer
+                          description: Year the color was first observed
+                          example: 1707
+                        knownFor:
+                          type: string
+                          description: What this color is famous for
+                          example: Euler's formula
+                        field:
+                          type: string
+                          description: Color family
+                          example: Analysis
+                      required:
+                      - id
+                      - name
+                  total:
+                    type: integer
+                    description: Total number of items
+                  limit:
+                    type: integer
+                    description: Items per page
+                  offset:
+                    type: integer
+                    description: Offset from start
+              example:
+                data:
+                - &id019
+                  id: 1
+                  name: Leonhard Euler
+                  nationality: Swiss
+                  birthYear: 1707
+                  knownFor: Euler's formula
+                  field: Analysis
+                - id: 2
+                  name: Carl Friedrich Gauss
+                  nationality: German
+                  birthYear: 1777
+                  knownFor: Gaussian distribution
+                  field: Number Theory
+                total: 5
+                limit: 10
+                offset: 0
+        '401': &id018
+          description: Unauthorized - missing or invalid API key
+          content:
+            application/json:
+              schema: *id001
+        '429':
+          description: Rate Limited - too many requests
+          content:
+            application/json:
+              schema: *id001
+    post:
+      tags:
+      - Colors
+      summary: Create a color
+      description: Add a new color to the collection.
+      operationId: createColor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the color
+                  example: Leonhard Euler
+                nationality:
+                  type: string
+                  description: Color origin country
+                  example: Swiss
+                birthYear:
+                  type: integer
+                  description: Year the color was first observed
+                  example: 1707
+                knownFor:
+                  type: string
+                  description: What this color is famous for
+                  example: Euler's formula
+                field:
+                  type: string
+                  description: Color family
+                  example: Analysis
+              required:
+              - name
+      responses:
+        '201':
+          description: Color created successfully
+          content:
+            application/json:
+              schema: *id017
+        '400':
+          description: Bad Request - invalid parameters
+          content:
+            application/json:
+              schema: *id001
+        '401': *id018
+  /colors/{colorId}:
+    get:
+      tags:
+      - Colors
+      summary: Get a color by ID
+      description: Retrieve a single color by its unique identifier.
+      operationId: getColor
+      parameters:
+      - &id020
+        name: colorId
+        in: path
+        required: true
+        description: Unique color identifier
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: A single color
+          content:
+            application/json:
+              schema: *id017
+              example: *id019
+        '401': *id018
+        '404': &id021
+          description: Not Found - resource does not exist
+          content:
+            application/json:
+              schema: *id001
+    delete:
+      tags:
+      - Colors
+      summary: Delete a color
+      description: Permanently remove a color from the collection.
+      operationId: deleteColor
+      parameters:
+      - *id020
+      responses:
+        '204':
+          description: Color deleted successfully
+        '401': *id018
+        '404': *id021
+  /animals:
+    get:
+      tags:
+      - Animals
+      summary: List all animals
+      description: Catalog of animals.
+      operationId: listAnimals
+      parameters:
+      - name: limit
+        in: query
+        description: Max items to return (1-50)
+        schema:
+          type: integer
+          default: 10
+          maximum: 50
+      - name: offset
+        in: query
+        description: Items to skip
+        schema:
+          type: integer
+          default: 0
+      - name: sort
+        in: query
+        description: Sort order
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: asc
+      responses:
+        '200':
+          description: A paginated list of animals
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: &id022
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: Unique animal identifier
+                          example: 1
+                        name:
+                          type: string
+                          description: Name of the animal
+                          example: Python
+                        creator:
+                          type: string
+                          description: Who discovered this animal
+                          example: Guido van Rossum
+                        yearCreated:
+                          type: integer
+                          description: Year of discovery
+                          example: 1991
+                        paradigm:
+                          type: string
+                          description: Behavioral pattern
+                          example: Multi-paradigm
+                        typing:
+                          type: string
+                          description: Classification system
+                          example: Dynamic
+                      required:
+                      - id
+                      - name
+                  total:
+                    type: integer
+                    description: Total number of items
+                  limit:
+                    type: integer
+                    description: Items per page
+                  offset:
+                    type: integer
+                    description: Offset from start
+              example:
+                data:
+                - &id024
+                  id: 1
+                  name: Python
+                  creator: Guido van Rossum
+                  yearCreated: 1991
+                  paradigm: Multi-paradigm
+                  typing: Dynamic
+                - id: 2
+                  name: JavaScript
+                  creator: Brendan Eich
+                  yearCreated: 1995
+                  paradigm: Multi-paradigm
+                  typing: Dynamic
+                total: 5
+                limit: 10
+                offset: 0
+        '401': &id023
+          description: Unauthorized - missing or invalid API key
+          content:
+            application/json:
+              schema: *id001
+        '429':
+          description: Rate Limited - too many requests
+          content:
+            application/json:
+              schema: *id001
+    post:
+      tags:
+      - Animals
+      summary: Create a animal
+      description: Add a new animal to the collection.
+      operationId: createAnimal
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the animal
+                  example: Python
+                creator:
+                  type: string
+                  description: Who discovered this animal
+                  example: Guido van Rossum
+                yearCreated:
+                  type: integer
+                  description: Year of discovery
+                  example: 1991
+                paradigm:
+                  type: string
+                  description: Behavioral pattern
+                  example: Multi-paradigm
+                typing:
+                  type: string
+                  description: Classification system
+                  example: Dynamic
+              required:
+              - name
+      responses:
+        '201':
+          description: Animal created successfully
+          content:
+            application/json:
+              schema: *id022
+        '400':
+          description: Bad Request - invalid parameters
+          content:
+            application/json:
+              schema: *id001
+        '401': *id023
+  /animals/{animalId}:
+    get:
+      tags:
+      - Animals
+      summary: Get a animal by ID
+      description: Retrieve a single animal by its unique identifier.
+      operationId: getAnimal
+      parameters:
+      - &id025
+        name: animalId
+        in: path
+        required: true
+        description: Unique animal identifier
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: A single animal
+          content:
+            application/json:
+              schema: *id022
+              example: *id024
+        '401': *id023
+        '404': &id026
+          description: Not Found - resource does not exist
+          content:
+            application/json:
+              schema: *id001
+    delete:
+      tags:
+      - Animals
+      summary: Delete a animal
+      description: Permanently remove a animal from the collection.
+      operationId: deleteAnimal
+      parameters:
+      - *id025
+      responses:
+        '204':
+          description: Animal deleted successfully
+        '401': *id023
+        '404': *id026
+  /movies:
+    get:
+      tags:
+      - Movies
+      summary: List all movies
+      description: Browse the movie database.
+      operationId: listMovies
+      parameters:
+      - name: limit
+        in: query
+        description: Max items to return (1-50)
+        schema:
+          type: integer
+          default: 10
+          maximum: 50
+      - name: offset
+        in: query
+        description: Items to skip
+        schema:
+          type: integer
+          default: 0
+      - name: sort
+        in: query
+        description: Sort order
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: asc
+      responses:
+        '200':
+          description: A paginated list of movies
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: &id027
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: Unique movie identifier
+                          example: 1
+                        name:
+                          type: string
+                          description: Title of the movie
+                          example: Hydrogen
+                        symbol:
+                          type: string
+                          description: Movie rating symbol
+                          example: H
+                        atomicNumber:
+                          type: integer
+                          description: Box office ranking
+                          example: 1
+                        atomicMass:
+                          type: number
+                          description: Critical mass score
+                          example: 1.008
+                        category:
+                          type: string
+                          description: Genre classification
+                          example: Nonmetal
+                      required:
+                      - id
+                      - name
+                  total:
+                    type: integer
+                    description: Total number of items
+                  limit:
+                    type: integer
+                    description: Items per page
+                  offset:
+                    type: integer
+                    description: Offset from start
+              example:
+                data:
+                - &id029
+                  id: 1
+                  name: Hydrogen
+                  symbol: H
+                  atomicNumber: 1
+                  atomicMass: 1.008
+                  category: Nonmetal
+                - id: 2
+                  name: Helium
+                  symbol: He
+                  atomicNumber: 2
+                  atomicMass: 4.003
+                  category: Noble Gas
+                total: 5
+                limit: 10
+                offset: 0
+        '401': &id028
+          description: Unauthorized - missing or invalid API key
+          content:
+            application/json:
+              schema: *id001
+        '429':
+          description: Rate Limited - too many requests
+          content:
+            application/json:
+              schema: *id001
+    post:
+      tags:
+      - Movies
+      summary: Create a movie
+      description: Add a new movie to the collection.
+      operationId: createMovie
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Title of the movie
+                  example: Hydrogen
+                symbol:
+                  type: string
+                  description: Movie rating symbol
+                  example: H
+                atomicNumber:
+                  type: integer
+                  description: Box office ranking
+                  example: 1
+                atomicMass:
+                  type: number
+                  description: Critical mass score
+                  example: 1.008
+                category:
+                  type: string
+                  description: Genre classification
+                  example: Nonmetal
+              required:
+              - name
+      responses:
+        '201':
+          description: Movie created successfully
+          content:
+            application/json:
+              schema: *id027
+        '400':
+          description: Bad Request - invalid parameters
+          content:
+            application/json:
+              schema: *id001
+        '401': *id028
+  /movies/{movieId}:
+    get:
+      tags:
+      - Movies
+      summary: Get a movie by ID
+      description: Retrieve a single movie by its unique identifier.
+      operationId: getMovie
+      parameters:
+      - &id030
+        name: movieId
+        in: path
+        required: true
+        description: Unique movie identifier
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: A single movie
+          content:
+            application/json:
+              schema: *id027
+              example: *id029
+        '401': *id028
+        '404': &id031
+          description: Not Found - resource does not exist
+          content:
+            application/json:
+              schema: *id001
+    delete:
+      tags:
+      - Movies
+      summary: Delete a movie
+      description: Permanently remove a movie from the collection.
+      operationId: deleteMovie
+      parameters:
+      - *id030
+      responses:
+        '204':
+          description: Movie deleted successfully
+        '401': *id028
+        '404': *id031
+components:
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Bizarre-Key
+      description: API key for authentication

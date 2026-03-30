@@ -13,4 +13,4 @@
 
 ## Documentation
 
-- [doc.oas.dereferenced.json](combinations/oas-dereferenced-json/doc.oas.dereferenced.json): Dereferenced OpenAPI 3.0.3 Specification (JSON)
+- [doc.oas.dereferenced.yml](combinations/oas-dereferenced-yml/doc.oas.dereferenced.yml): Dereferenced OpenAPI 3.0.3 Specification (YAML)
