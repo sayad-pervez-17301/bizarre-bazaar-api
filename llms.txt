@@ -1,0 +1,21 @@
+# Bizarre Bazaar API
+
+> The Bizarre Bazaar API is a RESTful service for managing six unique collections: Fruits, Vegetables, Legumes, Colors, Animals, and Movies. Each collection supports full CRUD operations with pagination and sorting.
+
+## Quick Reference
+
+- **Version:** 1.0.0
+- **Authentication:** API key in `X-Bizarre-Key` header
+- **Rate Limit:** 100 requests per minute per API key
+- **Resources:** Fruits, Vegetables, Legumes, Colors, Animals, Movies
+- **Operations per resource:** List (GET), Get by ID (GET), Create (POST), Delete (DELETE)
+- **Common query params:** `limit` (default 10, max 50), `offset` (default 0), `sort` (asc|desc)
+
+## Documentation
+
+- [fruits.oas.dereferenced.yml](combinations/modular-dereferenced-oas-yml/fruits.oas.dereferenced.yml): Fruits Dereferenced OpenAPI Spec (YAML)
+- [vegetables.oas.dereferenced.yml](combinations/modular-dereferenced-oas-yml/vegetables.oas.dereferenced.yml): Vegetables Dereferenced OpenAPI Spec (YAML)
+- [legumes.oas.dereferenced.yml](combinations/modular-dereferenced-oas-yml/legumes.oas.dereferenced.yml): Legumes Dereferenced OpenAPI Spec (YAML)
+- [colors.oas.dereferenced.yml](combinations/modular-dereferenced-oas-yml/colors.oas.dereferenced.yml): Colors Dereferenced OpenAPI Spec (YAML)
+- [animals.oas.dereferenced.yml](combinations/modular-dereferenced-oas-yml/animals.oas.dereferenced.yml): Animals Dereferenced OpenAPI Spec (YAML)
+- [movies.oas.dereferenced.yml](combinations/modular-dereferenced-oas-yml/movies.oas.dereferenced.yml): Movies Dereferenced OpenAPI Spec (YAML)

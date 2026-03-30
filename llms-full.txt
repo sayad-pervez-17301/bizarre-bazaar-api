@@ -1,9 +1,13 @@
+# Bizarre Bazaar API - Complete Documentation
+
+> This file contains the complete API documentation for the Bizarre Bazaar API.
+
+# === fruits.oas.dereferenced.yml ===
 openapi: 3.0.3
 info:
-  title: Bizarre Bazaar API
+  title: Bizarre Bazaar API - Fruits
   version: 1.0.0
-  description: 'The Bizarre Bazaar API is a RESTful service for managing six unique collections: Fruits, Vegetables, Legumes, Colors, Animals, and Movies. Each collection supports full CRUD operations with
-    pagination and sorting.'
+  description: Manage your fruit collection. Part of the Bizarre Bazaar API.
 servers:
 - url: /
   description: Current host
@@ -216,6 +220,27 @@ paths:
           description: Fruit deleted successfully
         '401': *id003
         '404': *id006
+components:
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Bizarre-Key
+      description: API key for authentication
+
+
+# === vegetables.oas.dereferenced.yml ===
+openapi: 3.0.3
+info:
+  title: Bizarre Bazaar API - Vegetables
+  version: 1.0.0
+  description: Browse and manage vegetables. Part of the Bizarre Bazaar API.
+servers:
+- url: /
+  description: Current host
+security:
+- apiKeyAuth: []
+paths:
   /vegetables:
     get:
       tags:
@@ -256,7 +281,7 @@ paths:
                 properties:
                   data:
                     type: array
-                    items: &id007
+                    items: &id002
                       type: object
                       properties:
                         id:
@@ -297,7 +322,7 @@ paths:
                     description: Offset from start
               example:
                 data:
-                - &id009
+                - &id004
                   id: 1
                   name: Germany
                   leader: Adolf Hitler
@@ -313,11 +338,22 @@ paths:
                 total: 5
                 limit: 10
                 offset: 0
-        '401': &id008
+        '401': &id003
           description: Unauthorized - missing or invalid API key
           content:
             application/json:
-              schema: *id001
+              schema: &id001
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error code
+                  message:
+                    type: string
+                    description: Human-readable error message
+                required:
+                - error
+                - message
         '429':
           description: Rate Limited - too many requests
           content:
@@ -363,13 +399,13 @@ paths:
           description: Vegetable created successfully
           content:
             application/json:
-              schema: *id007
+              schema: *id002
         '400':
           description: Bad Request - invalid parameters
           content:
             application/json:
               schema: *id001
-        '401': *id008
+        '401': *id003
   /vegetables/{vegetableId}:
     get:
       tags:
@@ -378,7 +414,7 @@ paths:
       description: Retrieve a single vegetable by its unique identifier.
       operationId: getVegetable
       parameters:
-      - &id010
+      - &id005
         name: vegetableId
         in: path
         required: true
@@ -390,10 +426,10 @@ paths:
           description: A single vegetable
           content:
             application/json:
-              schema: *id007
-              example: *id009
-        '401': *id008
-        '404': &id011
+              schema: *id002
+              example: *id004
+        '401': *id003
+        '404': &id006
           description: Not Found - resource does not exist
           content:
             application/json:
@@ -405,12 +441,33 @@ paths:
       description: Permanently remove a vegetable from the collection.
       operationId: deleteVegetable
       parameters:
-      - *id010
+      - *id005
       responses:
         '204':
           description: Vegetable deleted successfully
-        '401': *id008
-        '404': *id011
+        '401': *id003
+        '404': *id006
+components:
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Bizarre-Key
+      description: API key for authentication
+
+
+# === legumes.oas.dereferenced.yml ===
+openapi: 3.0.3
+info:
+  title: Bizarre Bazaar API - Legumes
+  version: 1.0.0
+  description: Explore the legume catalog. Part of the Bizarre Bazaar API.
+servers:
+- url: /
+  description: Current host
+security:
+- apiKeyAuth: []
+paths:
   /legumes:
     get:
       tags:
@@ -451,7 +508,7 @@ paths:
                 properties:
                   data:
                     type: array
-                    items: &id012
+                    items: &id002
                       type: object
                       properties:
                         id:
@@ -492,7 +549,7 @@ paths:
                     description: Offset from start
               example:
                 data:
-                - &id014
+                - &id004
                   id: 1
                   name: Mercury
                   distanceFromSunKm: 57900000
@@ -508,11 +565,22 @@ paths:
                 total: 5
                 limit: 10
                 offset: 0
-        '401': &id013
+        '401': &id003
           description: Unauthorized - missing or invalid API key
           content:
             application/json:
-              schema: *id001
+              schema: &id001
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error code
+                  message:
+                    type: string
+                    description: Human-readable error message
+                required:
+                - error
+                - message
         '429':
           description: Rate Limited - too many requests
           content:
@@ -558,13 +626,13 @@ paths:
           description: Legume created successfully
           content:
             application/json:
-              schema: *id012
+              schema: *id002
         '400':
           description: Bad Request - invalid parameters
           content:
             application/json:
               schema: *id001
-        '401': *id013
+        '401': *id003
   /legumes/{legumeId}:
     get:
       tags:
@@ -573,7 +641,7 @@ paths:
       description: Retrieve a single legume by its unique identifier.
       operationId: getLegume
       parameters:
-      - &id015
+      - &id005
         name: legumeId
         in: path
         required: true
@@ -585,10 +653,10 @@ paths:
           description: A single legume
           content:
             application/json:
-              schema: *id012
-              example: *id014
-        '401': *id013
-        '404': &id016
+              schema: *id002
+              example: *id004
+        '401': *id003
+        '404': &id006
           description: Not Found - resource does not exist
           content:
             application/json:
@@ -600,12 +668,33 @@ paths:
       description: Permanently remove a legume from the collection.
       operationId: deleteLegume
       parameters:
-      - *id015
+      - *id005
       responses:
         '204':
           description: Legume deleted successfully
-        '401': *id013
-        '404': *id016
+        '401': *id003
+        '404': *id006
+components:
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Bizarre-Key
+      description: API key for authentication
+
+
+# === colors.oas.dereferenced.yml ===
+openapi: 3.0.3
+info:
+  title: Bizarre Bazaar API - Colors
+  version: 1.0.0
+  description: Discover and manage colors. Part of the Bizarre Bazaar API.
+servers:
+- url: /
+  description: Current host
+security:
+- apiKeyAuth: []
+paths:
   /colors:
     get:
       tags:
@@ -646,7 +735,7 @@ paths:
                 properties:
                   data:
                     type: array
-                    items: &id017
+                    items: &id002
                       type: object
                       properties:
                         id:
@@ -687,7 +776,7 @@ paths:
                     description: Offset from start
               example:
                 data:
-                - &id019
+                - &id004
                   id: 1
                   name: Leonhard Euler
                   nationality: Swiss
@@ -703,11 +792,22 @@ paths:
                 total: 5
                 limit: 10
                 offset: 0
-        '401': &id018
+        '401': &id003
           description: Unauthorized - missing or invalid API key
           content:
             application/json:
-              schema: *id001
+              schema: &id001
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error code
+                  message:
+                    type: string
+                    description: Human-readable error message
+                required:
+                - error
+                - message
         '429':
           description: Rate Limited - too many requests
           content:
@@ -753,13 +853,13 @@ paths:
           description: Color created successfully
           content:
             application/json:
-              schema: *id017
+              schema: *id002
         '400':
           description: Bad Request - invalid parameters
           content:
             application/json:
               schema: *id001
-        '401': *id018
+        '401': *id003
   /colors/{colorId}:
     get:
       tags:
@@ -768,7 +868,7 @@ paths:
       description: Retrieve a single color by its unique identifier.
       operationId: getColor
       parameters:
-      - &id020
+      - &id005
         name: colorId
         in: path
         required: true
@@ -780,10 +880,10 @@ paths:
           description: A single color
           content:
             application/json:
-              schema: *id017
-              example: *id019
-        '401': *id018
-        '404': &id021
+              schema: *id002
+              example: *id004
+        '401': *id003
+        '404': &id006
           description: Not Found - resource does not exist
           content:
             application/json:
@@ -795,12 +895,33 @@ paths:
       description: Permanently remove a color from the collection.
       operationId: deleteColor
       parameters:
-      - *id020
+      - *id005
       responses:
         '204':
           description: Color deleted successfully
-        '401': *id018
-        '404': *id021
+        '401': *id003
+        '404': *id006
+components:
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Bizarre-Key
+      description: API key for authentication
+
+
+# === animals.oas.dereferenced.yml ===
+openapi: 3.0.3
+info:
+  title: Bizarre Bazaar API - Animals
+  version: 1.0.0
+  description: Catalog of animals. Part of the Bizarre Bazaar API.
+servers:
+- url: /
+  description: Current host
+security:
+- apiKeyAuth: []
+paths:
   /animals:
     get:
       tags:
@@ -841,7 +962,7 @@ paths:
                 properties:
                   data:
                     type: array
-                    items: &id022
+                    items: &id002
                       type: object
                       properties:
                         id:
@@ -882,7 +1003,7 @@ paths:
                     description: Offset from start
               example:
                 data:
-                - &id024
+                - &id004
                   id: 1
                   name: Python
                   creator: Guido van Rossum
@@ -898,11 +1019,22 @@ paths:
                 total: 5
                 limit: 10
                 offset: 0
-        '401': &id023
+        '401': &id003
           description: Unauthorized - missing or invalid API key
           content:
             application/json:
-              schema: *id001
+              schema: &id001
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error code
+                  message:
+                    type: string
+                    description: Human-readable error message
+                required:
+                - error
+                - message
         '429':
           description: Rate Limited - too many requests
           content:
@@ -948,13 +1080,13 @@ paths:
           description: Animal created successfully
           content:
             application/json:
-              schema: *id022
+              schema: *id002
         '400':
           description: Bad Request - invalid parameters
           content:
             application/json:
               schema: *id001
-        '401': *id023
+        '401': *id003
   /animals/{animalId}:
     get:
       tags:
@@ -963,7 +1095,7 @@ paths:
       description: Retrieve a single animal by its unique identifier.
       operationId: getAnimal
       parameters:
-      - &id025
+      - &id005
         name: animalId
         in: path
         required: true
@@ -975,10 +1107,10 @@ paths:
           description: A single animal
           content:
             application/json:
-              schema: *id022
-              example: *id024
-        '401': *id023
-        '404': &id026
+              schema: *id002
+              example: *id004
+        '401': *id003
+        '404': &id006
           description: Not Found - resource does not exist
           content:
             application/json:
@@ -990,12 +1122,33 @@ paths:
       description: Permanently remove a animal from the collection.
       operationId: deleteAnimal
       parameters:
-      - *id025
+      - *id005
       responses:
         '204':
           description: Animal deleted successfully
-        '401': *id023
-        '404': *id026
+        '401': *id003
+        '404': *id006
+components:
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Bizarre-Key
+      description: API key for authentication
+
+
+# === movies.oas.dereferenced.yml ===
+openapi: 3.0.3
+info:
+  title: Bizarre Bazaar API - Movies
+  version: 1.0.0
+  description: Browse the movie database. Part of the Bizarre Bazaar API.
+servers:
+- url: /
+  description: Current host
+security:
+- apiKeyAuth: []
+paths:
   /movies:
     get:
       tags:
@@ -1036,7 +1189,7 @@ paths:
                 properties:
                   data:
                     type: array
-                    items: &id027
+                    items: &id002
                       type: object
                       properties:
                         id:
@@ -1077,7 +1230,7 @@ paths:
                     description: Offset from start
               example:
                 data:
-                - &id029
+                - &id004
                   id: 1
                   name: Hydrogen
                   symbol: H
@@ -1093,11 +1246,22 @@ paths:
                 total: 5
                 limit: 10
                 offset: 0
-        '401': &id028
+        '401': &id003
           description: Unauthorized - missing or invalid API key
           content:
             application/json:
-              schema: *id001
+              schema: &id001
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error code
+                  message:
+                    type: string
+                    description: Human-readable error message
+                required:
+                - error
+                - message
         '429':
           description: Rate Limited - too many requests
           content:
@@ -1143,13 +1307,13 @@ paths:
           description: Movie created successfully
           content:
             application/json:
-              schema: *id027
+              schema: *id002
         '400':
           description: Bad Request - invalid parameters
           content:
             application/json:
               schema: *id001
-        '401': *id028
+        '401': *id003
   /movies/{movieId}:
     get:
       tags:
@@ -1158,7 +1322,7 @@ paths:
       description: Retrieve a single movie by its unique identifier.
       operationId: getMovie
       parameters:
-      - &id030
+      - &id005
         name: movieId
         in: path
         required: true
@@ -1170,10 +1334,10 @@ paths:
           description: A single movie
           content:
             application/json:
-              schema: *id027
-              example: *id029
-        '401': *id028
-        '404': &id031
+              schema: *id002
+              example: *id004
+        '401': *id003
+        '404': &id006
           description: Not Found - resource does not exist
           content:
             application/json:
@@ -1185,12 +1349,12 @@ paths:
       description: Permanently remove a movie from the collection.
       operationId: deleteMovie
       parameters:
-      - *id030
+      - *id005
       responses:
         '204':
           description: Movie deleted successfully
-        '401': *id028
-        '404': *id031
+        '401': *id003
+        '404': *id006
 components:
   securitySchemes:
     apiKeyAuth:
